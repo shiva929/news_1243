@@ -6,3 +6,5 @@ pdf2image
 pytesseract
 layoutparser[layoutmodels]  # This includes compatible Detectron2
 Pillow
+opencv-python-headless
+
