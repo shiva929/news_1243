@@ -11,6 +11,9 @@ import os
 import requests
 from PIL import Image
 from io import BytesIO
+from scraper import get_google_drive_links, get_direct_download_link, download_pdf
+from pdf_utils import extract_pages
+from extract_headline import extract_headline_from_pdf  
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -93,48 +96,62 @@ def extract_headline_from_pdf(pdf_path):
 
     return all_headlines if all_headlines else ["No headlines detected"], layout_list, page_numbers
 
+
+
+
+
+# URLs
+toi_url = "https://www.dailyepaper.in/times-of-india-epaper-pdf-march-2025/"
+et_url = 'https://www.dailyepaper.in/economic-times-newspaper-2025/'
 toi_image_url = "https://www.connectclue.com/uploads/eetArya1612440307545TimesofIndiaCirculationinIndiaconnectclue.jpg"
-et_image_url = 'https://img.etimg.com/photo/msid-74451948,quality-100/et-logo.jpg'
+et_image_url = "https://img.etimg.com/photo/msid-74451948,quality-100/et-logo.jpg"
 
-if np is not None:
+# Sidebar Selection
+np = st.sidebar.selectbox("Choose Newspaper", ["Times of India", "Economic Times"])
+
+if np:
+    # Display Image
     if np == 'Times of India':
-        response = requests.get(toi_image_url)
-        if response.status_code == 200:
-            image = Image.open(BytesIO(response.content))
-            st.image(image, caption="Times of India Circulation", use_container_width=True)
+        image_url = toi_image_url
+    else:
+        image_url = et_image_url
+
+    response = requests.get(image_url)
+    if response.status_code == 200:
+        image = Image.open(BytesIO(response.content))
+        st.image(image, caption=f"{np} Circulation", use_container_width=True)
+    else:
+        st.error("Failed to load the image. Please check the URL.")
+
+    # Download and Extract PDF
+    if st.button(f"Download and Process {np} PDF"):
+        if np == 'Times of India':
+            links = get_google_drive_links(toi_url)
         else:
-            st.error("Failed to load the image. Please check the URL.")
-    elif np == 'Economic Times':
-        response = requests.get(et_image_url)
-        if response.status_code == 200:
-            image = Image.open(BytesIO(response.content))
-            st.image(image, caption="Economic Times Circulation", use_container_width=True)
+            links = get_google_drive_links(et_url)
+
+        direct_link = get_direct_download_link(links[1])
+        raw_pdf_filename = f"{np.replace(' ', '_').lower()}_full.pdf"
+        reduced_pdf_filename = f"{np.replace(' ', '_').lower()}_reduced.pdf"
+
+        # Download full PDF
+        download_success = download_pdf(direct_link, raw_pdf_filename)
+        
+        if download_success:
+            # Extract Pages (example: pages 2, 3, 4)
+            extract_pages(raw_pdf_filename, [2, 3, 4], reduced_pdf_filename)
+
+            # Extract headlines from reduced PDF
+            headlines, layouts, page_numbers = extract_headline_from_pdf(reduced_pdf_filename)
+
+            # Display Headlines
+            st.success(f"Here are today's top headlines in {np}:")
+            df = pd.DataFrame({
+                'Page Number': page_numbers,
+                'Headlines': headlines
+            })
+            st.dataframe(df)
         else:
-            st.error("Failed to load the image. Please check the URL.")
+            st.error("Failed to download or process the PDF.")
 
-if np == 'Times of India':
-    pdf_path = "/content/reduced_pages_toi.pdf"
-    headlines, layouts, page_numbers = extract_headline_from_pdf(pdf_path)
-    print("Detected Headlines:")
-    print('\n'.join(headlines))
-    print("\nLayout Objects:", layouts)
 
-    df = pd.DataFrame({
-        'Page Number': page_numbers,
-        'Headlines': headlines
-    })
-elif np == 'Economic Times':
-    pdf_path = "/content/reduced_pages_et.pdf"
-    headlines, layouts, page_numbers = extract_headline_from_pdf(pdf_path)
-    print("Detected Headlines:")
-    print('\n'.join(headlines))
-    print("\nLayout Objects:", layouts)
-
-    df = pd.DataFrame({
-        'Page Number': page_numbers,
-        'Headlines': headlines
-    })
-
-if np is not None:
-    st.write(f'Here are today\'s top headlines in {np}.')
-    st.dataframe(df)
