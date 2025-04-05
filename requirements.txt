@@ -1,0 +1,12 @@
+streamlit
+beautifulsoup4
+requests
+PyPDF2
+pdf2image
+pytesseract
+layoutparser
+torch
+torchvision
+torchaudio
+Pillow
+detectron2==0.2.1+cpu
