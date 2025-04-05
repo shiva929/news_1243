@@ -1,4 +1,3 @@
-# requirements.txt
 streamlit
 beautifulsoup4
 requests
