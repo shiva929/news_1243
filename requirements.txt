@@ -1,3 +1,4 @@
+python==3.10.*
 streamlit
 beautifulsoup4
 requests
@@ -5,9 +6,8 @@ PyPDF2
 pdf2image
 pytesseract
 layoutparser
-torchaudio
-Pillow
-torch>=1.10.0
-torchvision>=0.11.0
+torch==1.10.0
+torchvision==0.11.0
 --find-links https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/index.html
 detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/index.html
+Pillow
