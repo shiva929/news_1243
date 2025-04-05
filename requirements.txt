@@ -5,8 +5,9 @@ PyPDF2
 pdf2image
 pytesseract
 layoutparser
-torch
-torchvision
 torchaudio
 Pillow
-git+https://github.com/facebookresearch/detectron2.git@ff53992b1985b63bd3262b5a36167098e3dada02
+torch>=1.10.0
+torchvision>=0.11.0
+--find-links https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/index.html
+detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/index.html
