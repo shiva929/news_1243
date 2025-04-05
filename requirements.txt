@@ -1,4 +1,4 @@
-python==3.10.*
+python==3.10.*  # Required for Detectron2 compatibility
 streamlit
 beautifulsoup4
 requests
@@ -8,6 +8,5 @@ pytesseract
 layoutparser
 torch==1.10.0
 torchvision==0.11.0
---find-links https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/index.html
-detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/index.html
+detectron2 @ https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.10/detectron2-0.6-cp310-cp310-linux_x86_64.whl
 Pillow
