@@ -1,10 +1,9 @@
+# requirements.txt
 streamlit
 beautifulsoup4
 requests
 PyPDF2
 pdf2image
 pytesseract
-layoutparser[layoutmodels]  # This includes Detectron2
+layoutparser[layoutmodels]  # This includes compatible Detectron2
 Pillow
-torch==1.10.0  # Match LayoutParser's expected version
-torchvision==0.11.0
