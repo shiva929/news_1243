@@ -13,7 +13,6 @@ from PIL import Image
 from io import BytesIO
 from scraper import get_google_drive_links, get_direct_download_link, download_pdf
 from pdf_utils import extract_pages
-from extract_headline import extract_headline_from_pdf  
 
 import warnings
 warnings.filterwarnings("ignore")
