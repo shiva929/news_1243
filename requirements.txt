@@ -9,4 +9,4 @@ torch
 torchvision
 torchaudio
 Pillow
-git+https://github.com/facebookresearch/detectron2.git@main
+detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu121/torch2.1/index.html
