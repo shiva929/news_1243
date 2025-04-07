@@ -7,4 +7,7 @@ pytesseract
 layoutparser[layoutmodels]  # This includes compatible Detectron2
 Pillow
 opencv-python-headless
+-f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html
+detectron2
+
 
